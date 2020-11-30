@@ -4,7 +4,9 @@
   "description": "XBee frame protocol for the BLE API",
   "main": "index.js",
   "scripts": {
-    "test": "standard --verbose && tape test.js"
+    "test": "standard --verbose && tape test.js",
+    "demo-build": "mkdir -p demo/build && cp demo/index.html demo/build && browserify demo/index.js -o demo/build/bundle.js",
+    "serve": "serve demo/build"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,8 @@
     "xbee-frame": "^1.2.0"
   },
   "devDependencies": {
+    "browserify": "^17.0.0",
+    "serve": "^11.3.2",
     "standard": "^16.0.3",
     "tape": "^5.0.1"
   }
