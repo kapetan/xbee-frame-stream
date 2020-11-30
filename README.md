@@ -50,10 +50,10 @@ See [xbee-frame](https://github.com/kapetan/xbee-frame) library for accepted fra
 
 The [demo app](https://kapetan.github.io/xbee-frame-stream/demo/build) can only run on browsers that support [Web Bluetooth](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API).
 
-Connect to a XBee device:
+Connecting to a XBee device using the demo app:
 
 1. Fill out the device BLE advertising name prefix (required by `Web Bluetooth`, by default it's something with *XBee*).
-1. Fill out the configured device BLE password.
+1. Fill out the configured device BLE password (the device needs to have BLE enabled).
 1. Press the `Connect` button.
 1. Use the text area to send *User Data Relay Input* frames to the device with the selected encoding (the hex encoding may contain spaces).
 1. In the left and right column respectively are the sent and received frames rendered.
