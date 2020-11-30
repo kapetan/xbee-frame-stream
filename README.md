@@ -34,7 +34,7 @@ protocol.send({
 protocol.write(buffer)
 ````
 
-The above can also be archieved using `pipe` if the there is a stream implementation of the transport.
+The above can also be archieved using `pipe` if the there is a stream implementation of the transport. The demo directory contains a `Web Bluetooth` based stream as an example.
 
 ```js
 protocol.on('frame', frame => console.log(frame))
@@ -45,6 +45,18 @@ protocol.send({ })
 ```
 
 See [xbee-frame](https://github.com/kapetan/xbee-frame) library for accepted frame types.
+
+## Demo
+
+The [demo app](https://kapetan.github.io/xbee-frame-stream/demo/build) can only run on browsers that support [Web Bluetooth](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API).
+
+Connect to a XBee device:
+
+1. Fill out the device BLE advertising name prefix (required by `Web Bluetooth`, by default it's something with *XBee*).
+1. Fill out the configured device BLE password.
+1. Press the `Connect` button.
+1. Use the text area to send *User Data Relay Input* frames to the device with the selected encoding (the hex encoding may contain spaces).
+1. In the left and right column respectively are the sent and received frames rendered.
 
 ## API
 
