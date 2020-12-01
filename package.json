@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "standard --verbose && tape test.js",
-    "demo-build": "mkdir -p demo/build && cp demo/index.html demo/build && browserify demo/index.js -o demo/build/bundle.js",
-    "serve": "serve demo/build"
+    "demo-build": "browserify demo/index.js -o demo/bundle.js",
+    "serve": "serve demo"
   },
   "repository": {
     "type": "git",
