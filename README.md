@@ -48,7 +48,7 @@ See [xbee-frame](https://github.com/kapetan/xbee-frame) library for accepted fra
 
 ## Demo
 
-The [demo app](https://kapetan.github.io/xbee-frame-stream/demo/build) can only run on browsers that support [Web Bluetooth](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API).
+The [demo app](https://kapetan.github.io/xbee-frame-stream/demo) can only run on browsers that support [Web Bluetooth](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API).
 
 Connecting to a XBee device using the demo app:
 
