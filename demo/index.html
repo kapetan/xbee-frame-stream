@@ -36,17 +36,41 @@
       margin-bottom: 25px;
     }
 
-    .data-form label {
+    .data-form .controls {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .data-form .controls .divider {
+      flex: 1;
+    }
+
+    .data-form .controls label:not(:last-child) {
       margin-right: 10px;
+    }
+
+    .data-form .command-controls {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .data-form .command-controls.hidden {
+      display: none;
+    }
+
+    .data-form .command-controls input {
+      flex: 1;
+      margin-left: 10px;
+      border-width: 1px;
     }
 
     .data-form textarea {
       width: 100%;
       box-sizing: border-box;
-      margin: 10px 0;
+      margin-bottom: 10px;
     }
 
-    .data-form textarea[readonly] {
+    .data-form textarea[readonly], input[readonly] {
       background-color: #f2f2f2;
     }
 
@@ -107,7 +131,7 @@
     </form>
 
     <form class="data-form">
-      <div>
+      <div class="controls">
         <label>
           UTF-8
           <input type="radio" name="encoding" value="utf8" checked="checked">
@@ -117,7 +141,22 @@
           HEX
           <input type="radio" value="hex" name="encoding">
         </label>
+
+        <div class="divider"></div>
+
+        <label>
+          Frame type
+          <select id="frame-type" name="frametype">
+            <option value="USER_DATA_RELAY_INPUT">User Data Relay Input (0x2d)</option>
+            <option value="LOCAL_AT_COMMAND_REQUEST">Local AT Command Request (0x08)</option>
+          </select>
+        </label>
       </div>
+
+      <label class="command-controls hidden">
+        AT command
+        <input type="text" name="command" readonly="readonly">
+      </label>
 
       <textarea name="data" rows="10" readonly="readonly"></textarea>
       <button type="submit">Send</button>

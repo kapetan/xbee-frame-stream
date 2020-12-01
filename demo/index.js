@@ -3,6 +3,7 @@ const BleStream = require('./ble-stream')
 
 const connectForm = document.querySelector('.connect-form')
 const dataForm = document.querySelector('.data-form')
+const frameTypeSelect = document.getElementById('frame-type')
 const clearSent = document.getElementById('clear-sent')
 const clearReceived = document.getElementById('clear-received')
 const sentFrames = document.getElementById('sent')
@@ -31,6 +32,14 @@ function renderFrame (frame) {
   return div
 }
 
+frameTypeSelect.onchange = function (e) {
+  const frameType = e.target.value
+  const commandControls = dataForm.querySelector('.command-controls')
+
+  if (frameType === 'USER_DATA_RELAY_INPUT') commandControls.classList.add('hidden')
+  else if (frameType === 'LOCAL_AT_COMMAND_REQUEST') commandControls.classList.remove('hidden')
+}
+
 connectForm.onsubmit = async function (e) {
   e.preventDefault()
   if (protocolStream) return
@@ -53,6 +62,7 @@ connectForm.onsubmit = async function (e) {
   })
 
   protocolStream.pipe(bleStream).pipe(protocolStream)
+  dataForm.elements.command.removeAttribute('readonly')
   dataForm.elements.data.removeAttribute('readonly')
 }
 
@@ -61,15 +71,29 @@ dataForm.onsubmit = function (e) {
   if (!protocolStream) return
 
   const encoding = dataForm.elements.encoding.value
+  const frameType = dataForm.elements.frametype.value
+  const command = dataForm.elements.command.value
   let data = dataForm.elements.data.value
 
   if (encoding !== 'utf8') data = data.replace(/\s|,/g, '')
 
-  const frame = {
-    type: ProtocolStream.FrameType.USER_DATA_RELAY_INPUT,
-    id: id++,
-    destination: ProtocolStream.Interface.MICROPYTHON,
-    data: Buffer.from(data, encoding)
+  let frame = null
+
+  if (frameType === 'USER_DATA_RELAY_INPUT') {
+    frame = {
+      type: ProtocolStream.FrameType.USER_DATA_RELAY_INPUT,
+      id: id++,
+      destination: ProtocolStream.Interface.MICROPYTHON,
+      data: Buffer.from(data, encoding)
+    }
+  } else if (frameType === 'LOCAL_AT_COMMAND_REQUEST') {
+    frame = {
+      type: ProtocolStream.FrameType.LOCAL_AT_COMMAND_REQUEST,
+      id: id++,
+      command: command
+    }
+
+    if (data) frame.value = data
   }
 
   protocolStream.send(frame)
