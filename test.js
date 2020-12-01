@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 const { Transform } = require('stream')
-const tape = require('tape')
+const test = require('tape')
 const encoding = require('xbee-frame')
 const srpParameters = require('@kapetan/secure-remote-password/parameters')
 const srpClient = require('@kapetan/secure-remote-password/client')
@@ -11,7 +11,7 @@ const ALGORITHM = 'aes-256-ctr'
 const USERNAME = 'username'
 const PASSWORD = 'password'
 
-tape('authentication and send/receive frame', t => {
+test('authentication and send/receive frame', t => {
   const params = srpParameters(1024)
 
   let onframe = (data, enc, cb) => {
@@ -116,5 +116,24 @@ tape('authentication and send/receive frame', t => {
     }
   })
 
-  transport.pipe(protocol).pipe(transport)
+  protocol.pipe(transport).pipe(protocol)
+})
+
+test('authentication error', t => {
+  const protocol = new ProtocolStream(USERNAME, PASSWORD)
+  const transport = new Transform({
+    transform (data, enc, cb) {
+      cb(null, encoding.encode({
+        type: encoding.FrameType.BLE_UNLOCK_RESPONSE,
+        step: encoding.StepError.BAD_PROOF_OF_KEY
+      }))
+    }
+  })
+
+  protocol.on('error', err => {
+    t.match(err.message, /BAD_PROOF_OF_KEY/)
+    t.end()
+  })
+
+  protocol.pipe(transport).pipe(protocol)
 })
