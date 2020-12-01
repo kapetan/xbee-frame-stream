@@ -6,7 +6,7 @@
   "scripts": {
     "test": "standard --verbose && tape test.js",
     "demo-build": "browserify demo/index.js -o demo/bundle.js",
-    "serve": "serve demo"
+    "demo-serve": "serve demo"
   },
   "repository": {
     "type": "git",
