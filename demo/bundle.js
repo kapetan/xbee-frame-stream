@@ -68,6 +68,8 @@ const BleStream = require('./ble-stream')
 
 const connectForm = document.querySelector('.connect-form')
 const dataForm = document.querySelector('.data-form')
+const clearSent = document.getElementById('clear-sent')
+const clearReceived = document.getElementById('clear-received')
 const sentFrames = document.getElementById('sent')
 const receivedFrames = document.getElementById('received')
 
@@ -88,6 +90,12 @@ function replacer (key, value) {
   return value
 }
 
+function renderFrame (frame) {
+  const div = document.createElement('div')
+  div.textContent = JSON.stringify(frame, replacer, 2)
+  return div
+}
+
 connectForm.onsubmit = async function (e) {
   e.preventDefault()
   if (protocolStream) return
@@ -104,7 +112,9 @@ connectForm.onsubmit = async function (e) {
   protocolStream = new ProtocolStream('apiservice', password)
 
   protocolStream.on('frame', frame => {
-    receivedFrames.innerHTML += `<div>${JSON.stringify(frame, replacer, 2)}</div>`
+    const div = renderFrame(frame)
+    receivedFrames.appendChild(div)
+    div.scrollIntoView()
   })
 
   protocolStream.pipe(bleStream).pipe(protocolStream)
@@ -128,7 +138,20 @@ dataForm.onsubmit = function (e) {
   }
 
   protocolStream.send(frame)
-  sentFrames.innerHTML += `<div>${JSON.stringify(frame, replacer, 2)}</div>`
+
+  const div = renderFrame(frame)
+  sentFrames.appendChild(div)
+  div.scrollIntoView()
+}
+
+clearSent.onclick = function (e) {
+  e.preventDefault()
+  sentFrames.innerHTML = ''
+}
+
+clearReceived.onclick = function (e) {
+  e.preventDefault()
+  receivedFrames.innerHTML = ''
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
